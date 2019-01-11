@@ -1,6 +1,8 @@
 # Chicago Data Analysis
 This project is an effort on my part to learn more about data visualization and machine learning.
 
+I've uploaded all the datasets used uncompressed except for the crime data. That one is bigger than GitHub's 100MB/file limit, so it had to be zipped.
+
 # Dependencies
 I make use of the following Python modules:
 * geopandas
