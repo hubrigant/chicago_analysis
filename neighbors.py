@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import csv
 import time
+import sys
 import pandas as pd
 import geopandas as gpd
 import shapely
 from shapely.ops import nearest_points
-import sys
+from scipy import spatial
 
 def distance_to_nearest(row, geom_union, df1, df2, geom1_col='geometry', geom2_col='geometry', src_column=None):
     """Find the nearest point and return the corresponding value from specified column."""
@@ -72,6 +73,15 @@ unpackdf = pd.DataFrame(crimesgpd.apply(distance_to_nearest,
                                       axis=1).tolist(),
                         columns = ['nearest_school_id', 'nearest_school_distance'], index=crimesgpd.index)
 crimesgpd=pd.concat([unpackdf, crimesgpd], axis=1)
+end_time = time.time()
+print("That took {0} seconds".format(end_time - start_time))
+print(crimesgpd.head())
+
+start_time2 = time.time()
+D = spatial.distance_matrix(crimesgpd['geometry'], schools['geometry'])
+nn = np.array([[np.min(d[i,]), np.argmin([i,])] for i in range(crimesgpd['geometry'].shape[0])])
+crimesgpd['scypi distance'] = nn[:,0]
+crimesgpd['scypi distance2'] = nn[:,1]
 end_time = time.time()
 print("That took {0} seconds".format(end_time - start_time))
 print(crimesgpd.head())
